@@ -2,6 +2,11 @@
 
 Test all your web-apps with Ruby and RSpec.
 
+The motivation for this was two-fold. I wanted a) a way to write
+clear, understandable tests for Golang HTTP APIs, and b) to write
+capybara tests for Django apps. This provides both in a nice,
+neat little package.
+
 So far, there are default configurations for the
 following languages/frameworks:
 
