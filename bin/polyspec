@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+
+require 'polyspec'
+require 'optparse'
+require 'rspec'
+
+options = Polyspec::CliOptionParser.new(ARGV).parse
+
+runner = if options[:start_command]
+  Polyspec::TestSetupRunner.from_args(options)
+else
+  Polyspec::RunnerFactory.new(ARGV[0] || Dir.pwd).get.new
+end
+
+runner.port = options[:port] || 3000
+runner.check_url = options[:check_url] || '/'
+
+runner.build
+RSpec.configure do |c|
+  c.around(:each) do |e|
+    runner.start
+    e.run
+    runner.stop
+  end
+end
+
+require 'shellwords'
+spec_opts = ENV['SPEC_OPTS'] || '-P spec/**/*_spec.rb'
+RSpec::Core::Runner.run(Shellwords.split(spec_opts))
+
+runner.cleanup
