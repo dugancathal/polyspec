@@ -85,3 +85,4 @@ On a Mac, you can just do (presuming you have homebrew installed):
     brew install go
     brew install python
     pip install django # (or whichever installer you choose to use)
+    rake spec
